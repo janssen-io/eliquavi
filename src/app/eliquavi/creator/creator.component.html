@@ -32,7 +32,7 @@
                 <!-- Name -->
                 <div class="field">
                   <div class="control">
-                    <input class="input" [(ngModel)]="filter.name" type="text" id="name" name="name" required />
+                    <input class="input" [(ngModel)]="filter.name" type="text" id="name" name="name" autocomplete="off" />
                   </div>
                 </div>
 
@@ -47,10 +47,17 @@
                   <p class="help">Disable filters to hide them in the transaction view.</p>
                 </div>
 
-                <!-- Submit -->
-                <button class="button is-primary" [ngClass]="{'is-loading': !formEnabled}">
-                  save
-                </button>
+                <div class="buttons">
+                  <!-- Submit -->
+                  <button class="button is-primary" [ngClass]="{'is-loading': !formEnabled}">
+                    save
+                  </button>
+
+                  <!-- Delete -->
+                  <button class="button is-danger" *ngIf="filter.id" (click)="onDelete(filter.id)" [disabled]="!formEnabled">
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
 

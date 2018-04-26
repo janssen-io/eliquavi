@@ -69,6 +69,15 @@ export class CreatorComponent {
     }
   }
 
+  onDelete(id: number){
+    this.disableForm();
+    this.service.remove(id).then(() => {
+      // TODO: Show undo message/bar
+      this.router.navigate(['app/filters']);
+    });
+    return false; // prevent submit
+  }
+
   enableForm() {
     this.formEnabled = true;
   }

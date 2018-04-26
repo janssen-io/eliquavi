@@ -2,22 +2,6 @@ import { FilterService } from "./filter.service";
 import { DexieService } from "./dexie.service";
 import { IFilter } from "../models/filter.model";
 
-
-function waitFor(predicate: () => Boolean, timeout) {
-    return new Promise( (resolve, reject) => {
-        var check = setInterval(() => {
-            if(predicate()){
-                clearInterval(check);
-                resolve(true);
-            }
-        }, 50);
-        setTimeout(() => {
-            clearInterval(check);
-            reject("Timeout expired.");
-        }, timeout);
-    });
-}
-
 describe('FilterService', () => {
     let db: DexieService;
     let service: FilterService;
@@ -88,15 +72,5 @@ describe('FilterService', () => {
             expect(value.length).toBe(0);
             done();
         });
-    });
-
-    it('can wait', (done: DoneFn) => {
-        let x = {data: false}
-        let wait_time = 1000;
-        waitFor(() => x.data, wait_time)
-            .then(() => { expect(true).toBeTruthy(); done(); })
-            .catch(() => { expect(true).toEqual(false); done(); });
-
-        setTimeout(() => x.data = true, 800);
     });
   });

@@ -1,7 +1,7 @@
 <div class="section">
   <div class="container">
       <div class="columns" *ngIf="filter; else loading">
-        
+
         <!-- Sidebar -->
         <div class="column is-narrow" id="collection">
           <aside class="menu">
@@ -23,10 +23,10 @@
               </li>
             </ul>
           </aside>
-          
+
         </div>
         <div class="column">
-          <form>
+          <form #filterForm="ngForm" (ngSubmit)="onSubmit(filterForm)">
             <div class="field">
               <div class="field-body">
                 <!-- Name -->
@@ -35,7 +35,7 @@
                     <input class="input" [(ngModel)]="filter.name" type="text" id="name" name="name" required />
                   </div>
                 </div>
-      
+
                 <!-- Enabled -->
                 <div class="field">
                   <div class="control">
@@ -46,19 +46,19 @@
                   </div>
                   <p class="help">Disable filters to hide them in the transaction view.</p>
                 </div>
-                  
+
                 <!-- Submit -->
-                <button class="button is-primary" (click)="onSubmit()" [ngClass]="{'is-loading': !formEnabled}">
+                <button class="button is-primary" [ngClass]="{'is-loading': !formEnabled}">
                   save
-              </button>
+                </button>
               </div>
             </div>
-      
+
+            <ngx-monaco-editor class="filter-editor" [options]="editorOptions" [(ngModel)]="filter.content" name="content"></ngx-monaco-editor>
           </form>
-          <ngx-monaco-editor class="filter-editor" [options]="editorOptions" [(ngModel)]="code"></ngx-monaco-editor>
         </div>
       </div>
-      
+
       <ng-template #loading>
         <div class="columns is-centered">
           <div class="column is-narrow">

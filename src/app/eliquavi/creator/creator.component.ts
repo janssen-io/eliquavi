@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { NgModel, NgForm } from '@angular/forms';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+
+import { Subject } from 'rxjs/Subject';
+
 import { IFilter } from '../models/filter.model';
 import { FilterService } from '../services/filter.service';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-creator',
@@ -14,11 +17,8 @@ export class CreatorComponent {
   private filters: IFilter[];
 
   private editorOptions = {theme: 'vs-dark', language: 'ruby'};
-  private code: string = '';
-
-  private id: number | undefined;
   private formEnabled = false;
-  
+
   constructor(
     private service: FilterService,
     private router: Router,
@@ -28,11 +28,9 @@ export class CreatorComponent {
       this.loadFilters();
       this.loadModel(+parameters['id']).then((filter) => {
         if(!filter){
-          // router.navigate(['/app/filters']);
-          return;
+          router.navigate(['/app/filters']);
         }
         this.filter = filter;
-        this.code = this.filter.content;
         this.enableForm();
       })
     });
@@ -57,23 +55,18 @@ export class CreatorComponent {
     });
   }
 
-  onSubmit() {
+  onSubmit(form: NgForm) {
+    form.options = {updateOn: 'submit'};
     this.disableForm();
     if(this.filter && this.filter.id){
-      this.filter.content = this.code;
       this.service.update(this.filter.id, this.filter)
-        .then(() => this.enableForm())
-        .catch(() => alert('Something went wrong...'));
+      .then(() => this.enableForm())
+      .catch(() => alert('Something went wrong... 1'));
     } else if(this.filter) {
-      this.filter.content = this.code;
       this.service.add(this.filter)
-        .then(id => this.router.navigate(['/app/filters', id]))
-        .catch(() => alert('Something went wrong...'));
+      .then(id => this.router.navigate(['/app/filters', id]))
+      .catch(() => alert('Something went wrong... 2'));
     }
-  }
-
-  onDelete() {
-    // TODO
   }
 
   enableForm() {

@@ -1,4 +1,10 @@
 .filter-editor {
     margin: 33px 0 0 0;
     height: calc(100vh - 250px);
+    min-height: 300px;
+}
+
+#collection {
+    width: 200px;
+    overflow: hidden;
 }

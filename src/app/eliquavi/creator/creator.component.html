@@ -3,28 +3,26 @@
       <div class="columns" *ngIf="filter; else loading">
         
         <!-- Sidebar -->
-        <div class="column is-narrow">
-          <nav class="panel">
-            <p class="panel-heading">Filters</p>
-            <div class="panel-block">
-              <a class="button is-link is-outlined is-fullwidth" routerLink="/app/filters">
-                Create
-              </a>
-            </div>
-            <a class="panel-block" *ngFor="let listed of filters">
-              <!-- Active Filter -->
-              <div *ngIf="listed.id == id">
-                {{ filter.name || "[Empty]" }}
-              </div>
+        <div class="column is-narrow" id="collection">
+          <aside class="menu">
+            <a class="button is-link is-outlined is-fullwidth" routerLink="/app/filters">
+              New filter
+            </a>
+            <p class="menu-label">Filters</p>
+            <ul class="menu-list">
+              <li *ngFor="let listed of filters">
+                <!-- Active Filter -->
+                <a *ngIf="listed.id == filter.id">
+                  {{ filter.name || "[Empty]" }}
+                </a>
 
-              <!-- Other Filters -->
-              <div *ngIf="listed.id != id">
-                <a routerLink="/app/filters/{{listed.id}}">
+                <!-- Other Filters -->
+                <a class="has-text-link" *ngIf="listed.id != filter.id" routerLink="/app/filters/{{listed.id}}">
                   {{ listed.name }}
                 </a>
-              </div>
-            </a>
-          </nav>
+              </li>
+            </ul>
+          </aside>
           
         </div>
         <div class="column">

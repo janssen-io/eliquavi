@@ -1,25 +1,24 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { CreatorComponent } from "./creator.component";
+import { TestBed, ComponentFixture } from "@angular/core/testing";
+import { FilterService } from "../services/filter.service";
+import { IFilter } from "../models/filter.model";
+import { Observable } from "rxjs/Observable";
+import { AppModule } from "../../app.module";
 
-import { CreatorComponent } from './creator.component';
+let filterServiceStub: Partial<FilterService>
+
+filterServiceStub = {
+    get: (id) => Observable.create(
+        {name: "Test Filter", content: "code", enabled: true}
+    )
+};
+
+TestBed.configureTestingModule({
+    imports: [ AppModule ],
+    declarations: [ CreatorComponent ],
+    providers:    [ {provide: FilterService, useValue: filterServiceStub } ]
+});
 
 describe('CreatorComponent', () => {
-  let component: CreatorComponent;
-  let fixture: ComponentFixture<CreatorComponent>;
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ CreatorComponent ]
-    })
-    .compileComponents();
-  }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CreatorComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    let fixture: ComponentFixture<CreatorComponent>;
 });

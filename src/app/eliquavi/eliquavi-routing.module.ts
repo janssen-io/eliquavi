@@ -8,37 +8,30 @@ import { ImportComponent } from './import/import.component';
 import { ExportComponent } from './export/export.component';
 
 const eliquaviRoutes: Routes = [
-    {
-      path: 'app',
-      component: EliquaviComponent,
-      children: [
-        {
-          path: '',
-          component: ViewComponent
-        },
-        {
-          path: 'filters',
-          component: CreatorComponent
-        },
-        {
-          path: 'import',
-          component: ImportComponent
-        },
-        {
-          path: 'export',
-          component: ExportComponent
-        },
-      ]
-    }
-  ];
+  {
+    path: '',
+    component: ViewComponent
+  },
+  {
+    path: 'filters',
+    component: CreatorComponent
+  },
+  {
+    path: 'filters/:id',
+    component: CreatorComponent
+  },
+  {
+    path: 'import',
+    component: ImportComponent
+  },
+  {
+    path: 'export',
+    component: ExportComponent
+  },
+];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(
-      eliquaviRoutes,
-      { enableTracing: true } // <-- debugging purposes only
-    )
-  ],
+  imports: [ RouterModule.forChild(eliquaviRoutes) ],
   exports: [
     RouterModule
   ]

@@ -9,7 +9,12 @@
       "outDir": "dist",
       "assets": [
         "assets",
-        "favicon.ico"
+        "favicon.ico",
+        {
+          "glob": "**/*",
+          "input": "../node_modules/ngx-monaco-editor/assets/monaco",
+          "output": "./assets/monaco/"
+        }
       ],
       "index": "index.html",
       "main": "main.ts",
@@ -19,6 +24,7 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
+        "../node_modules/bulma/css/bulma.css",
         "styles.css"
       ],
       "scripts": [],

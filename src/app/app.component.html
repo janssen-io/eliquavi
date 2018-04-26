@@ -1,0 +1,43 @@
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="container">
+    <div class="navbar-brand">
+      <a routerLink="/home" class="navbar-item">Home</a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a routerLink="/app" class="navbar-link">App</a>
+      
+        <div class="navbar-dropdown">
+          <a routerLink="/app/filters" class="navbar-item">
+            <span>
+              <strong>Filters</strong><br />
+              Create custom filters
+            </span>
+          </a>
+          <hr class="navbar-divider">
+          <a routerLink="/app/import" class="navbar-item">
+            <span>
+              <strong>Import</strong><br />
+              Import transactions and filters
+            </span>
+          </a>
+          <hr class="navbar-divider">
+          <a routerLink="/app/export" class="navbar-item">
+            <span>
+              <strong>Export</strong><br />
+              Export your transactions and filters
+            </span>
+          </a>
+          <hr class="navbar-divider">
+          <div class="navbar-item">
+            Version 1.0.0
+          </div>
+        </div>
+      </div>
+      <a routerLink="/docs" class="navbar-item">Documentation</a>
+    </div>
+    <div class="navbar-end">
+      <router-outlet name="header"></router-outlet>
+    </div>
+  </div>
+</nav>
+<router-outlet></router-outlet>

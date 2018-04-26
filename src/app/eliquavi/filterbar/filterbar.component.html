@@ -1,0 +1,14 @@
+<div *ngFor="let filter of filters">
+  <input type="checkbox" id="filter-{{filter.id}}" />
+  <label for="filter-{{filter.id}}">
+    {{filter.name}}
+  </label>
+</div> 
+
+<form>
+  <input [(ngModel)]="newFilter.name" type="text" id="name" name="name" required />
+  <input [(ngModel)]="newFilter.content" type="text" id="content" name="content" />
+  <label for="enabled">Enabled?</label>
+  <input [(ngModel)]="newFilter.enabled" type="checkbox" id="enabled" name="enabled" />
+  <input type="submit" value="save" (click)="onSubmit()" [disabled]="isDisabled" />
+</form>

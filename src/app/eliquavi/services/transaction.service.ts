@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Dexie } from 'dexie';
 
-import { ITransaction } from './models/transaction.model'
+import { ITransaction } from '../models/transaction.model'
 import { DexieService } from './dexie.service';
 
 @Injectable()

@@ -11,7 +11,7 @@ export class ConfirmModalComponent {
   private visible: boolean = false;
   private modal: { body: string, action: string};
 
-  private modalEvent: Subject<boolean> = new Subject<boolean>();
+  private modalEvent: Subject<boolean>;
 
   constructor() { 
     this.modal = {
@@ -25,12 +25,8 @@ export class ConfirmModalComponent {
     this.modalEvent = new Subject<boolean>();
     this.visible = true;
     
-    console.log("LOG", this.modal);
-    
     return new Promise<void>( (resolve, reject) => {
-      console.log("LOG", "CREATED PROMISE");
       this.modalEvent.subscribe((data) => {
-        this.modalEvent.complete();
         this.visible = false;
         if(data === true) {
           resolve();
@@ -43,12 +39,10 @@ export class ConfirmModalComponent {
   }
 
   onCancel() {
-    console.log("LOG", "CANCEL");
     this.modalEvent.next(false);
   }
 
   onConfirm() {
-    console.log("LOG", "CONFIRM");
     this.modalEvent.next(true);
   }
 

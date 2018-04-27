@@ -20,7 +20,7 @@ export class ConfirmModalComponent {
     }
   }
 
-  show(title: string, body: string, action: string = 'confirm'): Promise<void> {
+  show(body: string, action: string = 'confirm'): Promise<void> {
     this.modal = { body: body, action: action }
     this.modalEvent = new Subject<boolean>();
     this.visible = true;

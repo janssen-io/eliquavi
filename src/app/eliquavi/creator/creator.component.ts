@@ -80,9 +80,8 @@ export class CreatorComponent {
   onDelete(id: number){
     this.disableForm();
     this.confirmModal.show(
-      'Delete filter',
       `Are you sure you want to delete '${this.filter.name}'`,
-      'delete'
+      'Delete'
     ).then(() => {
         this.service.remove(id).then(() => {
           this.router.navigate(['app/filters']);

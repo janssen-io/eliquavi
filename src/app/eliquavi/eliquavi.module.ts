@@ -34,8 +34,7 @@ import { LayoutModule } from '../layout/layout.module';
     CreatorComponent,
     ImportComponent,
     ExportComponent,
-    FilterbarComponent,
-    ConfirmModalComponent
+    FilterbarComponent
   ],
   providers: [
     DexieService,

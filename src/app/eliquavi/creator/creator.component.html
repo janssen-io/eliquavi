@@ -1,3 +1,5 @@
+<app-confirm-modal #confirmModal></app-confirm-modal>
+
 <div class="section">
   <div class="container">
       <div class="columns" *ngIf="filter; else loading">
@@ -23,8 +25,9 @@
               </li>
             </ul>
           </aside>
-
         </div>
+
+        <!-- Filter Form -->
         <div class="column">
           <form #filterForm="ngForm" (ngSubmit)="onSubmit(filterForm)">
             <div class="field">

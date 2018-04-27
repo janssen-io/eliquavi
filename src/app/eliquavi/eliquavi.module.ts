@@ -16,13 +16,17 @@ import { FilterbarComponent } from './filterbar/filterbar.component';
 import { TransactionService } from './services/transaction.service';
 import { DexieService, DB_NAME } from './services/dexie.service';
 import { FilterService } from './services/filter.service';
+import { AppModule } from '../app.module';
+import { ConfirmModalComponent } from '../layout/confirm-modal/confirm-modal.component';
+import { LayoutModule } from '../layout/layout.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     EliquaviRoutingModule,
-    MonacoEditorModule.forRoot()
+    MonacoEditorModule.forRoot(),
+    LayoutModule
   ],
   declarations: [
     EliquaviComponent,
@@ -30,7 +34,8 @@ import { FilterService } from './services/filter.service';
     CreatorComponent,
     ImportComponent,
     ExportComponent,
-    FilterbarComponent
+    FilterbarComponent,
+    ConfirmModalComponent
   ],
   providers: [
     DexieService,

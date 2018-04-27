@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgModel, NgForm } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
@@ -6,6 +6,7 @@ import { Subject } from 'rxjs/Subject';
 
 import { IFilter } from '../models/filter.model';
 import { FilterService } from '../services/filter.service';
+import { ConfirmModalComponent } from '../../layout/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-creator',
@@ -16,8 +17,15 @@ export class CreatorComponent {
   private filter: IFilter;
   private filters: IFilter[];
 
-  private editorOptions = {theme: 'vs-dark', language: 'ruby'};
+  private editorOptions = {
+    theme: 'vs-dark',
+    language: 'ruby',
+  };
+
   private formEnabled = false;
+
+  @ViewChild('confirmModal')
+  confirmModal: ConfirmModalComponent;
 
   constructor(
     private service: FilterService,
@@ -71,10 +79,17 @@ export class CreatorComponent {
 
   onDelete(id: number){
     this.disableForm();
-    this.service.remove(id).then(() => {
-      // TODO: Show undo message/bar
-      this.router.navigate(['app/filters']);
-    });
+    this.confirmModal.show(
+      'Delete filter',
+      `Are you sure you want to delete '${this.filter.name}'`,
+      'delete'
+    ).then(() => {
+        this.service.remove(id).then(() => {
+          this.router.navigate(['app/filters']);
+        });
+      }
+    ).catch(() => this.enableForm());
+    
     return false; // prevent submit
   }
 

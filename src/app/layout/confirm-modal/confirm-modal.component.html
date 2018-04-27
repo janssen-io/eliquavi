@@ -1,0 +1,14 @@
+<div class="modal" [ngClass]="{'is-active': visible}">
+  <div class="modal-background" (click)="onCancel()">
+  </div>
+  <div class="modal-content">
+    <div class="modal-card-body">
+      {{ modal.body }}
+      <div class="buttons is-right">
+        <button class="button" (click)="onCancel()">Cancel</button>
+        <button class="button is-primary" (click)="onConfirm()">{{ modal.action }}</button>
+      </div>
+    </div>
+  </div>
+  <button class="modal-close is-large" aria-label="close" (click)="onCancel()"></button>
+</div>

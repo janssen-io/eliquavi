@@ -1,0 +1,19 @@
+<div class="disjunction-container">
+  <div class="columns">
+    <div class="column is-narrow">
+      <div class="field">
+        <div class="control">
+          <input type="checkbox" name="inverted" [(ngModel)]="disjunction.inverted" />
+        </div>
+      </div>
+    </div>
+    <div class="column">
+      <h3>Any</h3>
+    </div>
+  </div>
+  <ng-template #rules></ng-template>
+  <button class="button is-primary" (click)="addRule()">Add new rule</button>
+  <ng-template #disjunctions></ng-template>
+  <button class="button is-danger" (click)="addDisjunction()">Add new any-group</button>
+
+</div>

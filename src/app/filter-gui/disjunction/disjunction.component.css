@@ -1,0 +1,8 @@
+.disjunction-container {
+    border-left: 1px solid black;
+    padding: 20px;
+}
+
+.disjunction-container button {
+    margin: 5px 0px;
+}

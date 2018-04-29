@@ -1,0 +1,27 @@
+<div class="rule-container">
+  <div class="columns field is-horizontal">
+    <div class="column is-narrow">
+      <div class="field">
+        <div class="control">
+          <input type="checkbox" name="inverted" [(ngModel)]="rule.inverted" />
+        </div>
+      </div>
+    </div>
+
+    <div class="column control">
+      <input type="text" class="input" placeholder="column" name="column" [(ngModel)]="rule.column" />
+    </div>
+
+    <div class="column is-narrow control">
+      <div class="select">
+        <select [(ngModel)]="rule.operator" name="operator">
+          <option *ngFor="let operator of operators">{{ operator }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="column control">
+        <input type="text" class="input" placeholder="value" name="value" [(ngModel)]="rule.value" />
+      </div>
+  </div>
+</div>

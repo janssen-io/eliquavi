@@ -1,7 +1,5 @@
-import { Rule } from "./rule";
-import { Disjunction } from "./disjunction";
+import { Condition } from './condition';
 
-export interface Filter {
-    rules: Rule[],
-    disjunctions: Disjunction[]
+export class Filter {
+    condition: Condition;
 }

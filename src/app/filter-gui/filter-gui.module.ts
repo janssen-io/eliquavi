@@ -1,21 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FilterComponent } from './filter/filter.component';
-import { RuleComponent } from './rule/rule.component';
-import { DisjunctionComponent } from './disjunction/disjunction.component';
-
 import { FormsModule } from '@angular/forms';
 
+import { CreateComponent } from './create/create.component';
+import { ConditionComponent } from './create/condition.component';
+
 @NgModule({
-  entryComponents: [
-    RuleComponent,
-    DisjunctionComponent
-  ],
   imports: [
     CommonModule,
-    FormsModule,
-    CommonModule
+    FormsModule
   ],
-  declarations: [FilterComponent, RuleComponent, DisjunctionComponent]
+  declarations: [
+    CreateComponent,
+    ConditionComponent
+  ]
 })
 export class FilterGuiModule { }

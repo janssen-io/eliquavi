@@ -1,0 +1,14 @@
+<button class="add-expression" (click)="addExpression()">Add Expression</button>
+<div [ngSwitch]="condition.type">
+  <div *ngSwitchCase="'and'" class="and some other ones">
+    <app-condition *ngFor="let c of condition.conditions"
+      [condition]="c"></app-condition>
+  </div>
+  <div *ngSwitchCase="'or'" class="or">
+    <app-condition *ngFor="let c of condition.conditions"
+      [condition]="c"></app-condition>
+  </div>
+  <div *ngSwitchCase="'expression'" class="expression">
+    {{ condition.leftHand }} {{ condition.operator }} {{ condition.rightHand }}
+  </div>
+</div>

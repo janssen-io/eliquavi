@@ -8,13 +8,15 @@ import { PublicModule } from './public/public.module';
 import { AppRoutingModule } from './app-routing.module';
 import { ConfirmModalComponent } from './layout/confirm-modal/confirm-modal.component';
 import { LayoutModule } from './layout/layout.module';
+import { FilterGuiModule } from './filter-gui/filter-gui.module';
 
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
     PublicModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FilterGuiModule
   ],
   declarations: [
     AppComponent,

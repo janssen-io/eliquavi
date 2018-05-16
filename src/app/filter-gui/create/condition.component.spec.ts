@@ -33,13 +33,11 @@ describe('ConditionComponent', () => {
     fixture.componentInstance.condition = model.condition;
     fixture.detectChanges();
 
-    const andNode = dom.querySelector(AND);
-
-    expect(andNode.children.length).toBe(2);
-    for (let i = 0; i < andNode.children.length; i++) {
-      const node: Element = andNode.children.item(i);
+    const expressionNodes = dom.querySelectorAll(`${AND} ${EXPR}`);
+    expect(expressionNodes.length).toBe(2);
+    Array.from(expressionNodes).forEach(node => {
       expect(node.textContent).toContain('five is greater than two');
-    }
+    });
   });
 
   it('shows deeper nested conditions', () => {

@@ -35,30 +35,30 @@ export class CreatorComponent {
     route.params.subscribe(parameters => {
       this.loadFilters();
       this.loadModel(+parameters['id']).then((filter) => {
-        if(!filter){
+        if (!filter) {
           router.navigate(['/app/filters']);
         }
         this.filter = filter;
         this.enableForm();
-      })
+      });
     });
   }
 
-  loadFilters(){
+  loadFilters() {
     this.service.getAll().then(filters => {
       this.filters = filters;
     });
   }
 
   loadModel(id: number | undefined): Promise<IFilter> {
-    if(id){
+    if (id) {
       return this.service.get(id).then(filter => {
         return filter;
       });
     }
     return Promise.resolve({
-      name: "",
-      content: "",
+      name: '',
+      content: '',
       enabled: true
     });
   }
@@ -66,18 +66,18 @@ export class CreatorComponent {
   onSubmit(form: NgForm) {
     form.options = {updateOn: 'submit'};
     this.disableForm();
-    if(this.filter && this.filter.id){
+    if (this.filter && this.filter.id) {
       this.service.update(this.filter.id, this.filter)
       .then(() => this.enableForm())
       .catch(() => alert('Something went wrong... 1'));
-    } else if(this.filter) {
+    } else if (this.filter) {
       this.service.add(this.filter)
       .then(id => this.router.navigate(['/app/filters', id]))
       .catch(() => alert('Something went wrong... 2'));
     }
   }
 
-  onDelete(id: number){
+  onDelete(id: number) {
     this.disableForm();
     this.confirmModal.show(
       `Are you sure you want to delete '${this.filter.name}'`,
@@ -88,7 +88,6 @@ export class CreatorComponent {
         });
       }
     ).catch(() => this.enableForm());
-    
     return false; // prevent submit
   }
 

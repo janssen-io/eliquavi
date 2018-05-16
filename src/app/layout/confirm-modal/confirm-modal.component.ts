@@ -8,30 +8,29 @@ import { Subject } from 'rxjs/Subject';
   styleUrls: ['./confirm-modal.component.css']
 })
 export class ConfirmModalComponent {
-  private visible: boolean = false;
+  private visible = false;
   private modal: { body: string, action: string};
 
   private modalEvent: Subject<boolean>;
 
-  constructor() { 
+  constructor() {
     this.modal = {
       body: 'body',
       action: 'go'
-    }
+    };
   }
 
   show(body: string, action: string = 'confirm'): Promise<void> {
-    this.modal = { body: body, action: action }
+    this.modal = { body: body, action: action };
     this.modalEvent = new Subject<boolean>();
     this.visible = true;
-    
+
     return new Promise<void>( (resolve, reject) => {
       this.modalEvent.subscribe((data) => {
         this.visible = false;
-        if(data === true) {
+        if (data === true) {
           resolve();
-        }
-        else {
+        } else {
           reject();
         }
       });
@@ -45,5 +44,4 @@ export class ConfirmModalComponent {
   onConfirm() {
     this.modalEvent.next(true);
   }
-
 }

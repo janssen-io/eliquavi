@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Dexie } from 'dexie';
 
-import { IFilter } from '../models/filter.model'
+import { IFilter } from '../models/filter.model';
 import { DexieService } from './dexie.service';
 
 @Injectable()

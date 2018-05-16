@@ -1,6 +1,7 @@
-import { FilterService } from "./filter.service";
-import { DexieService } from "./dexie.service";
-import { IFilter } from "../models/filter.model";
+import { FilterService } from './filter.service';
+import { DexieService } from './dexie.service';
+import { IFilter } from '../models/filter.model';
+// import { Filter, Condition, AndGroup } from '../../filter-gui/models';
 
 describe('FilterService', () => {
     let db: DexieService;
@@ -21,9 +22,9 @@ describe('FilterService', () => {
         };
     });
 
-    afterEach((done: DoneFn)=> { 
+    afterEach((done: DoneFn) => {
         service.getAll().then((fs) => {
-            service.table.bulkDelete(fs.map(fs => fs.id)).then(() => done());
+            service.table.bulkDelete(fs.map(f => f.id)).then(() => done());
         });
     });
 
@@ -31,46 +32,64 @@ describe('FilterService', () => {
         // completely remove database
         db.delete();
     });
-  
-    it('#add creates an id', (done: DoneFn) => {
-        service.add(filter).then(value => {
-            expect(value).toBeDefined();
-            done();
-        });
-    });
-  
-    it('#get returns the full filter object', (done: DoneFn) => {
-        service.add(filter).then((id) => service.get(id)).then(value => {
-            expect(value).toBeDefined();
-            expect(value.name).toBe(filter.name);
-            expect(value.content).toBe(filter.content);
-            expect(value.enabled).toBe(filter.enabled);
-            done();
+
+    describe('#add', () => {
+        it('should assign an id', (done: DoneFn) => {
+            service.add(filter).then(value => {
+                expect(value).toBeDefined();
+                done();
+            });
         });
     });
 
-    it('#get returns null if id does not exist', (done: DoneFn) => {
-        service.get(1000).then((val) => {
-            expect(val).toBeUndefined();
-            done();
+    describe('#get', () => {
+        it('returns the full filter object', (done: DoneFn) => {
+            service.add(filter).then((id) => service.get(id)).then(value => {
+                expect(value).toBeDefined();
+                expect(value.name).toBe(filter.name);
+                expect(JSON.stringify(value.content)).toEqual(JSON.stringify(filter.content));
+                expect(value.enabled).toBe(filter.enabled);
+                done();
+            });
+        });
+
+        it('it should return the full filter object', (done: DoneFn) => {
+            service.add(filter).then((id) => service.get(id)).then(value => {
+                expect(value).toBeDefined();
+                expect(value.name).toBe(filter.name);
+                expect(value.content).toEqual(filter.content);
+                expect(value.enabled).toBe(filter.enabled);
+                done();
+            });
+        });
+
+        it('it should return null if id does not exist', (done: DoneFn) => {
+            service.get(1000).then((val) => {
+                expect(val).toBeUndefined();
+                done();
+            });
         });
     });
 
-    it('#remove deletes the persisted filter', async (done: DoneFn) => {
-        service.add(filter).then(id => {
-            service.remove(id).then(() => {
-                service.get(id).then((value) => {
-                    expect(value).toBeUndefined();
-                    done();
+    describe('#remove', () => {
+        it('#remove deletes the persisted filter', async (done: DoneFn) => {
+            service.add(filter).then(id => {
+                service.remove(id).then(() => {
+                    service.get(id).then((value) => {
+                        expect(value).toBeUndefined();
+                        done();
+                    });
                 });
             });
         });
     });
 
-    it('#getAll returns all filters', (done: DoneFn) => {
-        service.getAll().then((value) => {
-            expect(value.length).toBe(0);
-            done();
+    describe('#getAll', () => {
+        it('it should all filters', (done: DoneFn) => {
+            service.getAll().then((value) => {
+                expect(value.length).toBe(0);
+                done();
+            });
         });
     });
   });

@@ -1,9 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Condition } from '../models/condition';
-import { Expression } from '../models/expression';
-import { Operator } from '../models/operator';
-import { AndGroup } from '../models/and-group';
-import { OrGroup } from '../models/or-group';
+import { Condition, Expression, Operator, AndGroup, OrGroup } from '../models';
 
 @Component({
   selector: 'app-condition',

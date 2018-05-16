@@ -30,4 +30,18 @@ export class ConditionComponent implements OnInit {
     }
     (<AndGroup|OrGroup>this.condition).conditions.push(newExpr);
   }
+
+  addAnd(): void {
+    const newAnd = new AndGroup([]);
+
+    if (!this.condition) {
+      this.condition = newAnd;
+      return;
+    }
+    if (this.condition instanceof Expression) {
+      this.condition = new AndGroup([this.condition]);
+      return;
+    }
+    (<AndGroup|OrGroup>this.condition).conditions.push(newAnd);
+  }
 }

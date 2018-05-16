@@ -1,4 +1,5 @@
 <button class="add-expression" (click)="addExpression()">Add Expression</button>
+<button class="add-and" (click)="addAnd()">Add and</button>
 <div [ngSwitch]="condition.type">
   <div *ngSwitchCase="'and'" class="and some other ones">
     <app-condition *ngFor="let c of condition.conditions"

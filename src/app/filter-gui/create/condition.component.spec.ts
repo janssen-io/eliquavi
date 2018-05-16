@@ -78,34 +78,69 @@ describe('ConditionComponent', () => {
     expect(orNode.textContent).toContain('five is not equal to two');
   });
 
-  describe('changes in the interface are updated in the model', () => {
-    it('adds an expression to the model', () => {
-      expect(app.condition).toBeUndefined();
-      const addButton: HTMLInputElement = <HTMLInputElement>dom.querySelector('.add-expression');
-      addButton.click();
-      fixture.detectChanges();
-      expect(dom.querySelector(EXPR)).toBeDefined();
-      expect(app.condition).toBeDefined();
+  describe('Changes in the interface are updated in the model.', () => {
+    describe('When the model is empty', () => {
+      it('adds an expression to the model', () => {
+        expect(app.condition).toBeUndefined();
+        const addButton: HTMLInputElement = <HTMLInputElement>dom.querySelector('.add-expression');
+        addButton.click();
+        fixture.detectChanges();
+        expect(dom.querySelector(EXPR)).toBeDefined();
+        expect(app.condition).toBeDefined();
+      });
+
+      it('adds an AND to the model', () => {
+        expect(app.condition).toBeUndefined();
+        const addButton: HTMLInputElement = <HTMLInputElement>dom.querySelector('.add-and');
+        addButton.click();
+        fixture.detectChanges();
+        expect(dom.querySelector(AND)).toBeDefined();
+        expect(app.condition).toBeDefined();
+      });
     });
 
-    it('creates an AND group when a second expression is added.', () => {
-      app.condition = dummyExpression;
-      const addButton: HTMLInputElement = <HTMLInputElement>dom.querySelector('.add-expression');
-      addButton.click();
-      fixture.detectChanges();
-      expect(dom.querySelector(AND)).toBeDefined();
-      expect(dom.querySelectorAll(`${AND} ${EXPR}`).length).toBe(2);
-      expect((<AndGroup>app.condition).conditions.length).toBe(2);
+    describe('When the model contains a single expression', () => {
+      it('creates an AND group when a second expression is added.', () => {
+        app.condition = dummyExpression;
+        const addButton: HTMLInputElement = <HTMLInputElement>dom.querySelector('.add-expression');
+        addButton.click();
+        fixture.detectChanges();
+        expect(dom.querySelector(AND)).toBeDefined();
+        expect(dom.querySelectorAll(`${AND} ${EXPR}`).length).toBe(2);
+        expect((<AndGroup>app.condition).conditions.length).toBe(2);
+      });
+
+      it('adds the existing expression to the new group', () => {
+        app.condition = dummyExpression;
+        const addButton: HTMLInputElement =
+          <HTMLInputElement>dom.querySelector('.add-and');
+        addButton.click();
+        fixture.detectChanges();
+        expect(dom.querySelectorAll(`${AND} ${EXPR}`).length).toBe(1);
+        expect((<AndGroup>app.condition).conditions.length).toBe(1);
+      });
     });
 
-    it('adds a new expression to the group if it exists', () => {
-      app.condition = new OrGroup([]);
-      expect(dom.querySelector(OR)).toBeDefined();
-      const addButton: HTMLInputElement = <HTMLInputElement>dom.querySelector('.add-expression');
-      addButton.click();
-      fixture.detectChanges();
-      expect(dom.querySelectorAll(`${OR} ${EXPR}`).length).toBe(1);
-      expect((<OrGroup>app.condition).conditions.length).toBe(1);
+    describe('When the model contains a group', () => {
+      it('adds a new expression to the existing group', () => {
+        app.condition = new OrGroup([]);
+        const addButton: HTMLInputElement =
+          <HTMLInputElement>dom.querySelector('.add-expression');
+        addButton.click();
+        fixture.detectChanges();
+        expect(dom.querySelectorAll(`${OR} ${EXPR}`).length).toBe(1);
+        expect((<OrGroup>app.condition).conditions.length).toBe(1);
+      });
+
+      it('adds a new group to the existing group', () => {
+        app.condition = new OrGroup([]);
+        const addButton: HTMLInputElement =
+          <HTMLInputElement>dom.querySelector('.add-and');
+        addButton.click();
+        fixture.detectChanges();
+        expect(dom.querySelectorAll(`${OR} ${AND}`).length).toBe(1);
+        expect((<OrGroup>app.condition).conditions.length).toBe(1);
+      });
     });
   });
 });

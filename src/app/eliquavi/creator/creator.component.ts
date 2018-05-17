@@ -14,10 +14,10 @@ import { ConfirmModalComponent } from '../../layout/confirm-modal/confirm-modal.
   styleUrls: ['./creator.component.css']
 })
 export class CreatorComponent {
-  private filter: IFilter;
-  private filters: IFilter[];
+  filter: IFilter;
+  filters: IFilter[];
 
-  private editorOptions = {
+  editorOptions = {
     theme: 'vs-dark',
     language: 'ruby',
   };

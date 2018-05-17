@@ -9,4 +9,8 @@ export class Expression extends Condition {
         public operator: Operator,
         public rightHand: string
     ) { super(); }
+
+    static Empty(): Expression {
+        return new Expression('', Operator.EqualTo, '');
+    }
 }

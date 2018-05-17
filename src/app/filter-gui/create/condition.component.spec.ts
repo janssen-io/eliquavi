@@ -68,8 +68,8 @@ describe('ConditionComponent', () => {
     const orNode = andNode.querySelector(OR);
     expect(orNode).toBeDefined();
 
-    const orModel = <OrGroup>(<AndGroup>model.condition).conditions[0];
-    const exprModel = <Expression>orModel.conditions[0];
+    const orModel = <OrGroup>(<AndGroup>model.condition).all[0];
+    const exprModel = <Expression>orModel.any[0];
 
     exprModel.operator = Operator.NotEqualTo;
     fixture.detectChanges();
@@ -105,7 +105,7 @@ describe('ConditionComponent', () => {
         fixture.detectChanges();
         expect(dom.querySelector(AND)).toBeDefined();
         expect(dom.querySelectorAll(`${AND} ${EXPR}`).length).toBe(2);
-        expect((<AndGroup>app.condition).conditions.length).toBe(2);
+        expect((<AndGroup>app.condition).all.length).toBe(2);
       });
 
       it('adds the existing expression to the new group', () => {
@@ -115,7 +115,7 @@ describe('ConditionComponent', () => {
         addButton.click();
         fixture.detectChanges();
         expect(dom.querySelectorAll(`${AND} ${EXPR}`).length).toBe(1);
-        expect((<AndGroup>app.condition).conditions.length).toBe(1);
+        expect((<AndGroup>app.condition).all.length).toBe(1);
       });
     });
 
@@ -127,7 +127,7 @@ describe('ConditionComponent', () => {
         addButton.click();
         fixture.detectChanges();
         expect(dom.querySelectorAll(`${OR} ${EXPR}`).length).toBe(1);
-        expect((<OrGroup>app.condition).conditions.length).toBe(1);
+        expect((<OrGroup>app.condition).any.length).toBe(1);
       });
 
       it('adds a new group to the existing group', () => {
@@ -137,7 +137,7 @@ describe('ConditionComponent', () => {
         addButton.click();
         fixture.detectChanges();
         expect(dom.querySelectorAll(`${OR} ${AND}`).length).toBe(1);
-        expect((<OrGroup>app.condition).conditions.length).toBe(1);
+        expect((<OrGroup>app.condition).any.length).toBe(1);
       });
     });
   });

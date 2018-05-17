@@ -24,7 +24,7 @@ export class ConditionComponent implements OnInit {
     if (this.condition instanceof Expression) {
       this.condition = new AndGroup([this.condition]);
     }
-    (<AndGroup|OrGroup>this.condition).conditions.push(newExpr);
+    (<AndGroup|OrGroup>this.condition).add(newExpr);
   }
 
   addAnd(): void {
@@ -38,6 +38,6 @@ export class ConditionComponent implements OnInit {
       this.condition = new AndGroup([this.condition]);
       return;
     }
-    (<AndGroup|OrGroup>this.condition).conditions.push(newAnd);
+    (<AndGroup|OrGroup>this.condition).add(newAnd);
   }
 }

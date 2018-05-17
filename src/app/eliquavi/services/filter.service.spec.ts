@@ -1,6 +1,8 @@
 import { FilterService } from './filter.service';
 import { DexieService } from './dexie.service';
 import { IFilter } from '../models/filter.model';
+import { Filter, AndGroup, Expression } from '../../filter-gui/models';
+import { FilterDeserializer } from './filter.deserializer';
 // import { Filter, Condition, AndGroup } from '../../filter-gui/models';
 
 describe('FilterService', () => {
@@ -90,6 +92,23 @@ describe('FilterService', () => {
                 expect(value.length).toBe(0);
                 done();
             });
+        });
+    });
+
+    describe('Filter Integration', () => {
+        it('should store deserializable JSON.', async (done: DoneFn) => {
+            const subject = new Filter();
+            subject.condition = new AndGroup([Expression.Empty()]);
+            const stored: IFilter = {
+                name: 'Actual Filter',
+                content: JSON.stringify(subject),
+                enabled: true
+            };
+            const storedId = await service.add(stored);
+            const record = await service.get(storedId);
+            const serialized = JSON.parse(record.content);
+            expect(FilterDeserializer.parseFilter(serialized)).toEqual(subject);
+            done();
         });
     });
   });

@@ -8,3 +8,7 @@ export enum Operator {
     LessOrEqual = 'is less than or equal to',
     GreaterOrEqual = 'is greater than or equal to'
 }
+
+// export enum Operator {
+//     EqualTo, GreaterThan, NotEqualTo
+// }

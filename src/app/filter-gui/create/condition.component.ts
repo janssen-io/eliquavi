@@ -4,19 +4,23 @@ import { Condition, Expression, Operator, AndGroup, OrGroup } from '../models';
 @Component({
   selector: 'app-condition',
   templateUrl: './condition.component.html',
+  styleUrls: ['./condition.component.css']
 })
 export class ConditionComponent implements OnInit {
 
   @Input()
   condition: Condition;
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor() {
+    if (!this.condition) {
+      this.condition = new AndGroup();
+    }
   }
 
+  ngOnInit() { }
+
   addExpression(): void {
-    const newExpr = new Expression('', Operator.EqualTo, '');
+    const newExpr = new Expression('lhs', Operator.EqualTo, 'rhs');
     if (!this.condition) {
       this.condition = newExpr;
       return;
@@ -28,16 +32,24 @@ export class ConditionComponent implements OnInit {
   }
 
   addAnd(): void {
-    const newAnd = new AndGroup([]);
+    this.addGroup(new AndGroup());
+  }
 
+  addOr(): void {
+    this.addGroup(new OrGroup());
+  }
+
+  private addGroup(group: AndGroup | OrGroup): void {
     if (!this.condition) {
-      this.condition = newAnd;
+      this.condition = group;
       return;
     }
+
     if (this.condition instanceof Expression) {
-      this.condition = new AndGroup([this.condition]);
+      group.add(this.condition);
+      this.condition = group;
       return;
     }
-    (<AndGroup|OrGroup>this.condition).add(newAnd);
+    (<AndGroup|OrGroup>this.condition).add(group);
   }
 }

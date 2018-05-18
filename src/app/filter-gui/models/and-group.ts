@@ -9,5 +9,11 @@ export class AndGroup extends Condition {
 
     add(condition: Condition): void {
         this.all.push(condition);
+        condition.parent = this;
+    }
+
+    remove(condition: Condition): void {
+        const index = this.all.findIndex(c => c === condition);
+        this.all.splice(index, 1);
     }
 }

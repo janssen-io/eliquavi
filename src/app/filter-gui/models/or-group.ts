@@ -9,5 +9,11 @@ export class OrGroup extends Condition {
 
     add(condition: Condition): void {
         this.any.push(condition);
+        condition.parent = this;
+    }
+
+    remove(condition: Condition): void {
+        const index = this.any.findIndex(c => c === condition);
+        this.any.splice(index, 1);
     }
 }

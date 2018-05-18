@@ -28,19 +28,64 @@ describe('ConditionComponent', () => {
     dom = fixture.debugElement.nativeElement;
   });
 
-  it('shows all child conditions in an AndGroup', () => {
-    model.condition = new AndGroup([dummyExpression, dummyExpression]);
-    fixture.componentInstance.condition = model.condition;
-    fixture.detectChanges();
+  describe('Rendering AndGroups', () => {
+    it('should show all child conditions in an AndGroup', () => {
+      app.condition = new AndGroup([dummyExpression, dummyExpression]);
+      fixture.detectChanges();
 
-    const expressionNodes = dom.querySelectorAll(`${AND} ${EXPR}`);
-    expect(expressionNodes.length).toBe(2);
-    Array.from(expressionNodes).forEach(node => {
-      expect(node.textContent).toContain('five is greater than two');
+      const expressionNodes = dom.querySelectorAll(`${AND} ${EXPR}`);
+      expect(expressionNodes.length).toBe(2);
+      Array.from(expressionNodes).forEach(node => {
+        expect(node.textContent).toContain('five is greater than two');
+      });
+    });
+
+    it('should show "or" between each child condition', () => {
+      const children = [dummyExpression, new OrGroup([dummyExpression]), dummyExpression];
+      app.condition = new AndGroup(children);
+      fixture.detectChanges();
+
+      const andNodes = dom.querySelectorAll(`${AND} .and-separator`);
+      expect(andNodes.length).toBe(children.length - 1);
     });
   });
 
-  it('shows deeper nested conditions', () => {
+  describe('Rendering OrGroups', () => {
+    it('should show all child conditions in an OrGroup', () => {
+      app.condition = new OrGroup([dummyExpression, dummyExpression]);
+      fixture.detectChanges();
+
+      const expressionNodes = dom.querySelectorAll(`${OR} ${EXPR}`);
+      expect(expressionNodes.length).toBe(2);
+      Array.from(expressionNodes).forEach(node => {
+        expect(node.textContent).toContain('five is greater than two');
+      });
+    });
+
+    it('should show "or" between each child condition', () => {
+      const children = [dummyExpression, new AndGroup([dummyExpression]), dummyExpression];
+      app.condition = new OrGroup(children);
+      fixture.detectChanges();
+
+      const orNodes = dom.querySelectorAll(`${OR} .or-separator`);
+      expect(orNodes.length).toBe(children.length - 1);
+    });
+  });
+
+  describe('Rendering Expressions', () => {
+    it('should show the properties of the expression', () => {
+      const [lhs, op, rhs] = ['left hand side', Operator.Match, 'right hand side'];
+      app.condition = new Expression(lhs, op, rhs);
+      fixture.detectChanges();
+      const expressionNodes = dom.querySelectorAll(EXPR);
+      expect(expressionNodes.length).toBe(1);
+      expect(expressionNodes[0].textContent).toContain(lhs);
+      expect(expressionNodes[0].textContent).toContain(op);
+      expect(expressionNodes[0].textContent).toContain(rhs);
+    });
+  });
+
+  it('should show deeper nested conditions', () => {
     model.condition = new AndGroup([
       new OrGroup([dummyExpression])
     ]);
@@ -78,50 +123,29 @@ describe('ConditionComponent', () => {
 
   describe('Changes in the interface are updated in the model.', () => {
     describe('When the model is empty', () => {
+      it('should add an AND group by default', () => {
+        expect(app.condition).toEqual(new AndGroup());
+        fixture.detectChanges();
+        expect(dom.querySelector('.and')).toBeTruthy();
+      });
+
       it('adds an expression to the model', () => {
-        expect(app.condition).toBeUndefined();
+        expect(app.condition).toEqual(new AndGroup());
+        fixture.detectChanges();
+        expect(dom.querySelector('.and')).toBeTruthy();
         const addButton: HTMLInputElement = <HTMLInputElement>dom.querySelector('.add-expression');
         addButton.click();
         fixture.detectChanges();
         expect(dom.querySelector(EXPR)).toBeDefined();
         expect(app.condition).toBeDefined();
       });
-
-      it('adds an AND to the model', () => {
-        expect(app.condition).toBeUndefined();
-        const addButton: HTMLInputElement = <HTMLInputElement>dom.querySelector('.add-and');
-        addButton.click();
-        fixture.detectChanges();
-        expect(dom.querySelector(AND)).toBeDefined();
-        expect(app.condition).toBeDefined();
-      });
-    });
-
-    describe('When the model contains a single expression', () => {
-      it('creates an AND group when a second expression is added.', () => {
-        app.condition = dummyExpression;
-        const addButton: HTMLInputElement = <HTMLInputElement>dom.querySelector('.add-expression');
-        addButton.click();
-        fixture.detectChanges();
-        expect(dom.querySelector(AND)).toBeDefined();
-        expect(dom.querySelectorAll(`${AND} ${EXPR}`).length).toBe(2);
-        expect((<AndGroup>app.condition).all.length).toBe(2);
-      });
-
-      it('adds the existing expression to the new group', () => {
-        app.condition = dummyExpression;
-        const addButton: HTMLInputElement =
-          <HTMLInputElement>dom.querySelector('.add-and');
-        addButton.click();
-        fixture.detectChanges();
-        expect(dom.querySelectorAll(`${AND} ${EXPR}`).length).toBe(1);
-        expect((<AndGroup>app.condition).all.length).toBe(1);
-      });
     });
 
     describe('When the model contains a group', () => {
       it('adds a new expression to the existing group', () => {
-        app.condition = new OrGroup([]);
+        app.condition = new OrGroup();
+        fixture.detectChanges();
+        expect(dom.querySelector('.or .add-expression')).toBeTruthy();
         const addButton: HTMLInputElement =
           <HTMLInputElement>dom.querySelector('.add-expression');
         addButton.click();
@@ -131,13 +155,68 @@ describe('ConditionComponent', () => {
       });
 
       it('adds a new group to the existing group', () => {
-        app.condition = new OrGroup([]);
+        app.condition = new OrGroup();
+        fixture.detectChanges();
         const addButton: HTMLInputElement =
           <HTMLInputElement>dom.querySelector('.add-and');
         addButton.click();
         fixture.detectChanges();
         expect(dom.querySelectorAll(`${OR} ${AND}`).length).toBe(1);
         expect((<OrGroup>app.condition).any.length).toBe(1);
+      });
+    });
+
+    describe('deleting of conditions', () => {
+      it('should delete an expression.', () => {
+        app.condition = new AndGroup();
+        (<AndGroup>app.condition).add(Expression.Empty());
+        fixture.detectChanges();
+        const deleteButton = <HTMLInputElement>dom.querySelector(`${EXPR} .delete`);
+        deleteButton.click();
+        expect(app.condition).toEqual(new AndGroup());
+      });
+
+      it('should delete an and group.', () => {
+        app.condition = new AndGroup();
+        (<AndGroup>app.condition).add(new AndGroup());
+        fixture.detectChanges();
+        const deleteButton = <HTMLInputElement>dom.querySelector(`${AND} .delete`);
+        deleteButton.click();
+        expect(app.condition).toEqual(new AndGroup());
+      });
+
+      it('should delete an or group.', () => {
+        app.condition = new AndGroup();
+        (<AndGroup>app.condition).add(new OrGroup());
+        fixture.detectChanges();
+        const deleteButton = <HTMLInputElement>dom.querySelector(`${OR} .delete`);
+        deleteButton.click();
+        expect(app.condition).toEqual(new AndGroup());
+      });
+
+      it('should not show delete on the root', () => {
+        app.condition = new AndGroup();
+        (<AndGroup>app.condition).add(new OrGroup());
+        fixture.detectChanges();
+
+        const deleteButton = dom.querySelectorAll(`${AND} .delete`);
+        expect(deleteButton.length).toBe(1);
+        expect(dom.querySelectorAll(`${OR} .delete`).length).toBe(1);
+      });
+    });
+
+    describe('collapsing and expanding groups', () => {
+      xit('should collapse an and group.', () => {
+
+      });
+      xit('should expand an and group.', () => {
+
+      });
+      xit('should collapse an or group.', () => {
+
+      });
+      xit('should expand an or group.', () => {
+
       });
     });
   });

@@ -7,6 +7,7 @@ import { Condition, Expression, Operator, AndGroup, OrGroup } from '../models';
   styleUrls: ['./condition.component.css']
 })
 export class ConditionComponent implements OnInit {
+  operators = Object.values(Operator);
 
   @Input()
   condition: Condition;

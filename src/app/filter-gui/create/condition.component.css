@@ -1,3 +1,21 @@
 .and, .or {
-    border: 1px solid black;
+    border-left: 2px solid #efefef;
+    padding: 10px;
+}
+
+.or {
+    background: #fafafa;
+}
+
+.and {
+    background: #fefefe;
+}
+
+.condition-container {
+    margin: 10px;
+    padding: 10px;
+}
+
+.separator {
+    font-family: "Oswald"
 }

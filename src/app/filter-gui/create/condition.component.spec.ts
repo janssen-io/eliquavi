@@ -35,17 +35,14 @@ describe('ConditionComponent', () => {
 
       const expressionNodes = dom.querySelectorAll(`${AND} ${EXPR}`);
       expect(expressionNodes.length).toBe(2);
-      Array.from(expressionNodes).forEach(node => {
-        expect(node.textContent).toContain('five is greater than two');
-      });
     });
 
-    it('should show "or" between each child condition', () => {
+    it('should show "and" between each child condition', () => {
       const children = [dummyExpression, new OrGroup([dummyExpression]), dummyExpression];
       app.condition = new AndGroup(children);
       fixture.detectChanges();
 
-      const andNodes = dom.querySelectorAll(`${AND} .and-separator`);
+      const andNodes = dom.querySelectorAll(`${AND} .separator`);
       expect(andNodes.length).toBe(children.length - 1);
     });
   });
@@ -57,9 +54,6 @@ describe('ConditionComponent', () => {
 
       const expressionNodes = dom.querySelectorAll(`${OR} ${EXPR}`);
       expect(expressionNodes.length).toBe(2);
-      Array.from(expressionNodes).forEach(node => {
-        expect(node.textContent).toContain('five is greater than two');
-      });
     });
 
     it('should show "or" between each child condition', () => {
@@ -67,21 +61,21 @@ describe('ConditionComponent', () => {
       app.condition = new OrGroup(children);
       fixture.detectChanges();
 
-      const orNodes = dom.querySelectorAll(`${OR} .or-separator`);
+      const orNodes = dom.querySelectorAll(`${OR} .separator`);
       expect(orNodes.length).toBe(children.length - 1);
     });
   });
 
   describe('Rendering Expressions', () => {
     it('should show the properties of the expression', () => {
-      const [lhs, op, rhs] = ['left hand side', Operator.Match, 'right hand side'];
+      const [lhs, op, rhs] = ['left hand side', Operator.NotMatch, 'right hand side'];
       app.condition = new Expression(lhs, op, rhs);
       fixture.detectChanges();
       const expressionNodes = dom.querySelectorAll(EXPR);
       expect(expressionNodes.length).toBe(1);
-      expect(expressionNodes[0].textContent).toContain(lhs);
-      expect(expressionNodes[0].textContent).toContain(op);
-      expect(expressionNodes[0].textContent).toContain(rhs);
+      expect(expressionNodes[0].querySelectorAll('input')[0].value).toContain(lhs);
+      expect(expressionNodes[0].querySelector('select').value).toContain(op);
+      expect(expressionNodes[0].querySelectorAll('input')[1].value).toContain(rhs);
     });
   });
 
@@ -96,9 +90,7 @@ describe('ConditionComponent', () => {
 
     const orNode = andNode.querySelector(OR);
     expect(orNode).toBeDefined();
-    expect(orNode.querySelector(EXPR)).toBeDefined();
-
-    expect(andNode.textContent).toContain('five is greater than two');
+    expect(orNode.querySelectorAll(EXPR).length).toBe(1);
   });
 
   it('changes to the model are dynamically updated', () => {
@@ -110,15 +102,18 @@ describe('ConditionComponent', () => {
     const andNode = dom.querySelector(AND);
 
     // sanity check
-    const orNode = andNode.querySelector(OR);
-    expect(orNode).toBeDefined();
+    const inputs = <HTMLInputElement[]>Array.from(andNode.querySelectorAll(`${OR} input`));
+    const select = <HTMLSelectElement>andNode.querySelector('select');
+    // expect(orNode).toBeDefined();
 
     const orModel = <OrGroup>(<AndGroup>model.condition).all[0];
     const exprModel = <Expression>orModel.any[0];
 
     exprModel.operator = Operator.NotEqualTo;
     fixture.detectChanges();
-    expect(orNode.textContent).toContain('five is not equal to two');
+    expect(inputs[0].value).toContain('five');
+    expect(inputs[1].value).toEqual('two');
+    expect(select.value).toEqual(Operator.NotEqualTo);
   });
 
   describe('Changes in the interface are updated in the model.', () => {

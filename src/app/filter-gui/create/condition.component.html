@@ -1,26 +1,50 @@
-<div [ngSwitch]="condition.type" class="cs">
+<div [ngSwitch]="condition.type" class="condition-container">
   <div *ngSwitchCase="'and'" class="and">
     <button *ngIf="condition.parent" class="delete" (click)="condition.parent.remove(condition)"></button>
-    <button class="add-expression" (click)="addExpression()">Add Expression</button>
-    <button class="add-and" (click)="addOr()">Add or</button>
+    <button class="button add-expression" (click)="addExpression()">Add Expression</button>
+    <button class="button add-and" (click)="addOr()">Add or</button>
 
     <div *ngFor="let c of condition.all; last as isLast">
       <app-condition [condition]="c"></app-condition>
-      <span *ngIf="!isLast" class="and-separator">AND</span>
+      <span *ngIf="!isLast" class="separator">and</span>
     </div>
   </div>
   <div *ngSwitchCase="'or'" class="or">
     <button class="delete" (click)="condition.parent.remove(condition)"></button>
-    <button class="add-expression" (click)="addExpression()">Add Expression</button>
-    <button class="add-and" (click)="addAnd()">Add and</button>
+    <button class="button add-expression" (click)="addExpression()">Add Expression</button>
+    <button class="button add-and" (click)="addAnd()">Add and</button>
 
     <div *ngFor="let c of condition.any; last as isLast">
         <app-condition [condition]="c"></app-condition>
-        <span *ngIf="!isLast" class="or-separator">OR</span>
+        <span *ngIf="!isLast" class="separator">or</span>
       </div>
   </div>
   <div *ngSwitchCase="'expression'" class="expression">
     <button class="delete" (click)="condition.parent.remove(condition)"></button>
-    {{ condition.leftHand }} {{ condition.operator }} {{ condition.rightHand }}
+    <div class="field is-horizontal">
+      <div class="field-body">
+        <div class="field">
+          <p class="control is-expanded">
+            <input class="input" type="text" placeholder="Column"
+            [value]="condition.leftHand" (input)="condition.leftHand = $event.target.value">
+          </p>
+        </div>
+        <div class="field">
+          <div class="control is-expanded">
+            <div class="select">
+              <select (change)="condition.operator = $event.target.value" [value]="condition.operator">
+                <option *ngFor="let op of operators">{{ op }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <p class="control is-expanded">
+            <input class="input" type="text" placeholder="Value"
+            [value]="condition.rightHand" (input)="condition.rightHand = $event.target.value">
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

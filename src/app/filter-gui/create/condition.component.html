@@ -1,6 +1,6 @@
 <div [ngSwitch]="condition.type" class="condition-container">
   <div *ngSwitchCase="'and'" class="and">
-    <a class="delete" *ngIf="condition.parent" (click)="remove(condition)"></a>
+    <a class="delete" *ngIf="condition.hasParent" (click)="remove(condition)"></a>
     <a class="button add-expression" (click)="addExpression()">Add Expression</a>
     <a class="button add-and" (click)="addOr()">Add or</a>
 

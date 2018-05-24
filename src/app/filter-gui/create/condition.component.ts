@@ -41,7 +41,7 @@ export class ConditionComponent implements OnInit {
   }
 
   remove(condition: Condition) {
-    (<AndGroup|OrGroup>condition.parent).remove(condition);
+    condition.onDelete.emit();
   }
 
   private addGroup(group: AndGroup | OrGroup): void {

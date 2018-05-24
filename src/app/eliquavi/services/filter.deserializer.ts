@@ -11,16 +11,14 @@ export class FilterDeserializer {
 
   static parseCondition(json: { [index: string]: any}): Condition {
     if (json.all) {
-      const result = new AndGroup();
       const children = (<any[]>json.all).map(c => FilterDeserializer.parseCondition(c));
-      result.all = children;
+      const result = new AndGroup(children);
       return result;
     }
 
     if (json.any) {
-      const result = new OrGroup();
       const children = (<any[]>json.any).map(c => FilterDeserializer.parseCondition(c));
-      result.any = children;
+      const result = new OrGroup(children);
       return result;
     }
 

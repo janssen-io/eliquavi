@@ -1,4 +1,5 @@
 import { Condition } from './condition';
+import { IConditionVisitor } from '../condition-visitor.interface';
 
 export class OrGroup extends Condition {
     readonly any: Condition[] = [];
@@ -19,5 +20,10 @@ export class OrGroup extends Condition {
     private remove(condition: Condition): void {
         const index = this.any.findIndex(c => c === condition);
         this.any.splice(index, 1);
+    }
+
+    accept(visitor: IConditionVisitor) {
+        visitor.visitOrGroup(this);
+        this.any.forEach(c => c.accept(visitor));
     }
 }

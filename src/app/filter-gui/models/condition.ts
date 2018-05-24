@@ -1,4 +1,5 @@
 import { EventEmitter } from '@angular/core';
+import { IConditionVisitor } from '../condition-visitor.interface';
 
 export abstract class Condition {
   public onDelete = new EventEmitter();
@@ -6,5 +7,9 @@ export abstract class Condition {
 
   get hasParent(): boolean {
     return this.onDelete.observers.length > 0;
+  }
+
+  accept(visitor: IConditionVisitor) {
+    throw new Error('"accept" is not implemented.');
   }
 }

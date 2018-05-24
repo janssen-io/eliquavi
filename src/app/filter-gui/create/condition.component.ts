@@ -40,6 +40,10 @@ export class ConditionComponent implements OnInit {
     this.addGroup(new OrGroup());
   }
 
+  remove(condition: Condition) {
+    (<AndGroup|OrGroup>condition.parent).remove(condition);
+  }
+
   private addGroup(group: AndGroup | OrGroup): void {
     if (!this.condition) {
       this.condition = group;

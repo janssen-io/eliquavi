@@ -3,6 +3,7 @@ import { DexieService } from './dexie.service';
 import { IFilter } from '../models/filter.model';
 import { Filter, AndGroup, Expression } from '../../filter-gui/models';
 import { FilterDeserializer } from './filter.deserializer';
+import { DataCloneVisitor } from '../../filter-gui/data-clone-visitor';
 // import { Filter, Condition, AndGroup } from '../../filter-gui/models';
 
 describe('FilterService', () => {
@@ -19,7 +20,7 @@ describe('FilterService', () => {
         service = new FilterService(db);
         filter = {
             name: Math.random().toString(36).slice(2),
-            content: Math.random().toString(36).slice(2),
+            content: new AndGroup(),
             enabled: true
         };
     });
@@ -97,17 +98,15 @@ describe('FilterService', () => {
 
     describe('Filter Integration', () => {
         it('should store deserializable JSON.', async (done: DoneFn) => {
-            const subject = new Filter();
-            subject.condition = new AndGroup([Expression.Empty()]);
+            const subject = new AndGroup([Expression.Empty()]);
             const stored: IFilter = {
                 name: 'Actual Filter',
-                content: JSON.stringify(subject),
+                content: subject,
                 enabled: true
             };
             const storedId = await service.add(stored);
             const record = await service.get(storedId);
-            const serialized = JSON.parse(record.content);
-            expect(FilterDeserializer.parseFilter(serialized)).toEqual(subject);
+            expect(FilterDeserializer.parseCondition(record.content)).toEqual(subject);
             done();
         });
     });

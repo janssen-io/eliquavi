@@ -3,6 +3,7 @@ import { ITransaction } from '../models/transaction.model';
 
 import Dexie from 'dexie';
 import { IFilter } from '../models/filter.model';
+import { SerializedFilter } from '../models/serialized-filter.model';
 
 export const DB_NAME = new InjectionToken<string>('db.name');
 
@@ -10,7 +11,7 @@ export const DB_NAME = new InjectionToken<string>('db.name');
 export class DexieService extends Dexie {
 
   private transactions: Dexie.Table<ITransaction, number>;
-  private filters: Dexie.Table<IFilter, number>;
+  private filters: Dexie.Table<SerializedFilter, number>;
 
   constructor(@Inject(DB_NAME) name: string = 'EliquaviDb') {
     super(name);

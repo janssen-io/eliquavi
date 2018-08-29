@@ -7,6 +7,7 @@ import { Subject } from 'rxjs/Subject';
 import { IFilter } from '../models/filter.model';
 import { FilterService } from '../services/filter.service';
 import { ConfirmModalComponent } from '../../layout/confirm-modal/confirm-modal.component';
+import { AndGroup } from '../../filter-gui/models';
 
 @Component({
   selector: 'app-creator',
@@ -58,7 +59,7 @@ export class CreatorComponent {
     }
     return Promise.resolve({
       name: '',
-      content: '',
+      content: new AndGroup(),
       enabled: true
     });
   }
